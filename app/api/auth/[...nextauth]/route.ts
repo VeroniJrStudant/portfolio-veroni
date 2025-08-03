@@ -7,11 +7,11 @@ const handler = NextAuth({
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: "Username", type: "text" },
+        name: { label: "name", type: "text" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.username || !credentials?.password) {
+        if (!credentials?.name || !credentials?.password) {
           return null
         }
 
@@ -19,19 +19,19 @@ const handler = NextAuth({
         // Por enquanto, usando credenciais hardcoded para demonstração
         const adminUser = {
           id: '1',
-          username: 'admin',
+          name: 'admin',
           password: '$2a$10$example.hash', // Senha: admin123
           role: 'admin'
         }
 
         // Em produção, verifique no banco de dados
-        if (credentials.username === adminUser.username) {
+        if (credentials.name === adminUser.name) {
           const isValidPassword = await bcrypt.compare(credentials.password, adminUser.password)
           
           if (isValidPassword) {
             return {
               id: adminUser.id,
-              username: adminUser.username,
+              name: adminUser.name,
               role: adminUser.role,
             }
           }
@@ -51,14 +51,14 @@ const handler = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role
-        token.username = user.username
+        token.name = user.name
       }
       return token
     },
     async session({ session, token }) {
       if (token) {
         session.user.role = token.role
-        session.user.username = token.username
+        session.user.name = token.name
       }
       return session
     }

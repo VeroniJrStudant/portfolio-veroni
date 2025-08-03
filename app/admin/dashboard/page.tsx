@@ -81,7 +81,8 @@ export default function AdminDashboard() {
             </div>
             
             <div className="flex items-center space-x-4">
-              <span className="text-gray-300">Olá, {session.user?.username}</span>
+              {/* <span className="text-gray-300">Olá, {session.user?.username}</span> */}
+              <span className="text-gray-300">Olá, {session.user?.name ?? 'Usuário'}</span>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
